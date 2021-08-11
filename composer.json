@@ -1,0 +1,5 @@
+{
+  "autoload": {
+      "files": ["Services/Curl.php","Parser/ParserFactory.php","DB/DB.php", "DB/Query.php","Parser/Parser.php","Parser/Dantri.php","Parser/Vietnamnet.php","Parser/Vnexpress.php"]
+  }
+}

@@ -2,7 +2,7 @@
 namespace Parser;
 
 /**
- * This is the abstract PageParser class. Other subparser class extend this class. 
+ * This is the abstract Parser class. Other subparser class extend this class. 
  * This class is used to parse data
  */
 abstract class Parser {

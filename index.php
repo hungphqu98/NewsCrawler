@@ -36,7 +36,7 @@
   $curl = new Services\Curl();
   $curl->get();
   
-  // Parse data
+  // Parse data based on Url submitted
   $result = Parser\ParserFactory::parse($curl);
   var_dump($result);
   

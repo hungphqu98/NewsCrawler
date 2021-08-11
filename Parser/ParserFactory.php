@@ -2,7 +2,7 @@
 namespace Parser;
 
 /**
- * This is the Parser class
+ * This is the ParserFactory class
  * 
  */
 class ParserFactory {

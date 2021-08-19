@@ -28,6 +28,21 @@ abstract class Parser {
   protected $dateQuery = "";
 
   /**
+   * @var string received title
+   */
+  protected $titleReceived;
+
+  /**
+   * @var string received content
+   */
+  protected $contentReceived;
+
+  /**
+   * @var string received date
+   */
+  protected $dateReceived;
+
+  /**
    * @var string parsed title
    */
   protected $title;
@@ -65,9 +80,14 @@ abstract class Parser {
     $news = $this->htmlParse();
 
     // Get title,content,data data
-    $title = $this->getTitle($news);
-    $content = $this->getContent($news);
-    $date = $this->getDate($news);
+    $titleRaw = $this->getTitle($news);
+    $contentRaw = $this->getContent($news);
+    $dateRaw = $this->getDate($news);
+
+    // Parse
+    $title = $this->formatTitle($titleRaw);
+    $content = $this->formatContent($contentRaw);
+    $date = $this->formatDate($dateRaw);
 
     // Create a result array from the data and return it
     $result = array(
@@ -104,21 +124,27 @@ abstract class Parser {
    * 
    * @return string
    */
-  protected function getTitle($news) {
+  public function getTitle($news) {
 
     $dataTitle = $news->query($this->titleQuery);
-    $titles = $dataTitle->item(0)->nodeValue;
+    $titleReceived = $dataTitle->item(0)->nodeValue;
+    return $titleReceived;
 
+  }
+
+  /**
+   * 
+   */
+  public function formatTitle($titleReceived) {
     // Remove whitespace if present
-    $titles = preg_replace('/\s+/', ' ', $titles);
+    $this->titleReceived = preg_replace('/\s+/', ' ', $this->titleReceived);
 
     // Escape single quotes
-    $titles = str_replace("'", "\'", $titles);
+    $this->titleReceived = str_replace("'", "\'", $this->titleReceived);
 
-    $title = trim($titles," ");
+    $title = trim($this->titleReceived," ");
 
     return $this->title = $title;
-
   }
 
   /**
@@ -126,17 +152,24 @@ abstract class Parser {
    * 
    * @return string
    */
-  protected function getContent($news) {
+  public function getContent($news) {
     $dataContent = $news->query($this->contentQuery);
 
     // Join data from different lines
-    $content = '';
+    $contentReceived = '';
     foreach ($dataContent as $line) {
-      $content .= $line->nodeValue;
+      $contentReceived .= $line->nodeValue;
     }
 
+    return $contentReceived;
+  }
+
+  /**
+   * 
+   */
+  public function formatContent($contentReceived) {
     // Escape single quotes
-    $content = str_replace("'", "\'", $content);
+    $content = str_replace("'", "\'", $contentReceived);
 
     return $this->content = $content;
   }
@@ -146,13 +179,20 @@ abstract class Parser {
    * 
    * @return string 
    */
-  protected function getDate($news) {
+  public function getDate($news) {
     $dataDate = $news->query($this->dateQuery);
-    $dateString = $dataDate->item(0)->nodeValue;
+    $dateReceived = $dataDate->item(0)->nodeValue;
 
+    return $dateReceived;
+  }
+
+  /**
+   * 
+   */
+  public function formatDate($dateReceived) {
     // Get only date & time data from string
-    preg_match('^\\d{1,2}/\\d{1,2}/\\d{4}^',$dateString,$day);
-    preg_match('^\\d{1,2}:\\d{1,2}^',$dateString,$time);
+    preg_match('^\\d{1,2}/\\d{1,2}/\\d{4}^',$dateReceived,$day);
+    preg_match('^\\d{1,2}:\\d{1,2}^',$dateReceived,$time);
     $date = $day[0]. " " .$time[0];
 
     return $this->date = $date;

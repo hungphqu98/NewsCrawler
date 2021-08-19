@@ -43,7 +43,7 @@ class Curl {
    */
   public function getUrl($url='') {
     $this->url = $url;
-    return $this;
+    return $this->url;
 
   }
   
@@ -52,7 +52,7 @@ class Curl {
    * 
    * @return string
    */
-  public function method($method = 'GET') {
+  public function getMethod($method = 'GET') {
     
     $this->method = $method;
     if ($method != 'GET') {
@@ -60,7 +60,7 @@ class Curl {
       echo "Only GET requests with curl are supported";
       echo '</pre>';
     }
-    return $this;
+    return $this->url;
 
   }
 
@@ -86,7 +86,9 @@ class Curl {
   public function get() {
 
     $this->init();
-    $this->getUrl($_POST['url'])->method('GET')->setOptArray();
+    $this->getUrl($_POST['url']);
+    $this->getMethod('GET');
+    $this->setOptArray();
 
   }
 

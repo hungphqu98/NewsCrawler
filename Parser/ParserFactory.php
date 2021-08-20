@@ -32,11 +32,11 @@ class ParserFactory {
     $url = $curl->getInfo()["url"];
 
     // Filter page url using regex
-     if (preg_match('/dantri/',$url)) {
+     if (preg_match('/dantri.com/',$url)) {
         $parser = new Dantri($curl);
-      } else if (preg_match('/vnexpress/',$url)) {
+      } else if (preg_match('/vnexpress.net/',$url)) {
         $parser = new Vnexpress($curl);
-      } else if (preg_match('/vietnamnet/',$url)) {
+      } else if (preg_match('/vietnamnet.vn/',$url)) {
         $parser = new Vietnamnet($curl);
       } else if (empty($url)){
         echo '<pre>';

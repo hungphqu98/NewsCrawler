@@ -6,6 +6,9 @@ class ParserTest extends TestCase {
     
     protected $anonymousParser;
 
+    /**
+     * Set up an anonymous class that extends abstract class Parser to test concrete class
+     */
     protected function setUp(): void
     {
         $this->anonymousParser = new class(new Services\Curl) extends Parser\Parser {
@@ -14,11 +17,13 @@ class ParserTest extends TestCase {
             {
                 $this->curl = $curl;
             }
-
         };
 
     }
     
+    /**
+     * Test if Curl request is executed correctly
+     */
     public function testCurlExecution() 
     {
         $mockCurl = $this->createMock(Services\Curl::class);
@@ -27,7 +32,7 @@ class ParserTest extends TestCase {
 
         $mockCurl->getUrl('example.com');
         $mockCurl->getMethod('GET');
-        $mockCurl->get();
+        $mockCurl->setOptArray();
         $mockCurl->method('exec')->willReturn('Result');
 
         $this->assertEquals('Result', $mockCurl->exec());
@@ -35,8 +40,7 @@ class ParserTest extends TestCase {
   
     public function testParseReturnArray()
     {
-        $curl = new Services\Curl;
-        $mockParser = $this->getMockBuilder(Parser\Parser::class)->setConstructorArgs([$curl])->setMethods(['getParse'])->getMockForAbstractClass(Parser\Parser::class);
+        $mockParser = $this->getMockBuilder(Parser\Parser::class)->setConstructorArgs([new Services\Curl])->setMethods(['getParse'])->getMockForAbstractClass(Parser\Parser::class);
 
         $result = ['title' => 'random title','content' => 'random content','date' => 'random date'];
         $mockParser->expects($this->once())->method('getParse')->willReturn($result);
@@ -45,6 +49,9 @@ class ParserTest extends TestCase {
 
     }
 
+    /**
+     * Data provider for title testing
+     */
     public function titleProvider()
     {
         return [
@@ -54,14 +61,29 @@ class ParserTest extends TestCase {
             array(" Have 'quotes' ", "Have \'quotes\'")
           ];
     }
+
     /**
      * @dataProvider titleProvider
+     * Test if title is formatted 
      */
     public function testTitleFormatted($titleRaw,$titleExpected)
     {
         $this->assertEquals($titleExpected,$this->anonymousParser->formatTitle($titleRaw));
     }
 
+    /**
+     * Test if content is formatted, escapes single quotes
+     */
+    public function testContentFormatted()
+    {
+        $contentRaw = "Sample content 'with' quotes";
+        $contentExpected = "Sample content \'with\' quotes";
+        $this->assertEquals($contentExpected,$this->anonymousParser->formatContent($contentRaw));
+    }
+
+    /**
+     * Data provider for date testing
+     */
     public function dateProvider()
     {
         return [
@@ -71,14 +93,15 @@ class ParserTest extends TestCase {
             array('03/02/2019 5:30 GMT+7 ', '03/02/2019 5:30')
           ];
     }
+
     /**
      * @dataProvider dateProvider
+     * Test if date is formatted
      */
     public function testdateFormatted($dateRaw,$dateExpected)
     {
         $this->assertEquals($dateExpected,$this->anonymousParser->formatDate($dateRaw));
     }
-
 
 
 }

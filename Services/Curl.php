@@ -119,7 +119,7 @@ class Curl {
    * 
    * @return array|false
    */
-  public function version() {
+  public function version($age = CURLVERSION_NOW) {
 
     return curl_version();
 

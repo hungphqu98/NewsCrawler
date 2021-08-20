@@ -105,11 +105,11 @@ abstract class Parser {
   }
 
   /**
-   * Get and format title from query data
+   * Get title from query data
    * 
    * @return string
    */
-  public function getTitle($news) {
+  protected function getTitle($news) {
 
     $dataTitle = $news->query($this->titleQuery);
     $titleRaw = $dataTitle->item(0)->nodeValue;
@@ -118,7 +118,9 @@ abstract class Parser {
   }
 
   /**
+   * Format title data to insert DB
    * 
+   * @return string
    */
   public function formatTitle($titleRaw) {
     // Remove whitespace if present
@@ -133,11 +135,11 @@ abstract class Parser {
   }
 
   /**
-   * Get and format content from query data
+   * Get content from query data
    * 
    * @return string
    */
-  public function getContent($news) {
+  protected function getContent($news) {
     $dataContent = $news->query($this->contentQuery);
 
     // Join data from different lines
@@ -150,7 +152,9 @@ abstract class Parser {
   }
 
   /**
+   * Format content data to insert DB
    * 
+   * @return string
    */
   public function formatContent($contentRaw) {
     // Escape single quotes
@@ -160,11 +164,11 @@ abstract class Parser {
   }
 
   /**
-   * Get and format content from query data
+   * Get date from query data
    * 
    * @return string 
    */
-  public function getDate($news) {
+  protected function getDate($news) {
     $dataDate = $news->query($this->dateQuery);
     $dateRaw = $dataDate->item(0)->nodeValue;
 
@@ -172,7 +176,9 @@ abstract class Parser {
   }
 
   /**
+   * Format date data to insert DB
    * 
+   * @return string
    */
   public function formatDate($dateRaw) {
     // Get only date & time data from string
@@ -181,10 +187,6 @@ abstract class Parser {
     $date = $day[0]. " " .$time[0];
 
     return $this->date = $date;
-  }
-
-  public function return() {
-    return true;
   }
 
 

@@ -1,6 +1,6 @@
 {
   "autoload": {
-      "files": ["Services/Curl.php","Parser/ParserFactory.php","DB/DB.php", "DB/Query.php","Parser/Parser.php","Parser/Dantri.php","Parser/Vietnamnet.php","Parser/Vnexpress.php","Parser/ParserChild.php"]
+      "files": ["Services/Curl.php","Parser/ParserFactory.php","DB/DB.php", "DB/Query.php","Parser/Parser.php","Parser/Dantri.php","Parser/Vietnamnet.php","Parser/Vnexpress.php"]
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",

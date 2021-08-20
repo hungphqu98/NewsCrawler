@@ -2,6 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * ParserTest
+ */
 class ParserTest extends TestCase {
     
     protected $anonymousParser;
@@ -37,7 +40,10 @@ class ParserTest extends TestCase {
 
         $this->assertEquals('Result', $mockCurl->exec());
     }
-  
+    
+    /**
+     * Test if getParse function actually return an array
+     */
     public function testParseReturnArray()
     {
         $mockParser = $this->getMockBuilder(Parser\Parser::class)->setConstructorArgs([new Services\Curl])->setMethods(['getParse'])->getMockForAbstractClass(Parser\Parser::class);

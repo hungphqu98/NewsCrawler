@@ -28,21 +28,6 @@ abstract class Parser {
   protected $dateQuery = "";
 
   /**
-   * @var string received title
-   */
-  protected $titleReceived;
-
-  /**
-   * @var string received content
-   */
-  protected $contentReceived;
-
-  /**
-   * @var string received date
-   */
-  protected $dateReceived;
-
-  /**
    * @var string parsed title
    */
   protected $title;
@@ -127,22 +112,22 @@ abstract class Parser {
   public function getTitle($news) {
 
     $dataTitle = $news->query($this->titleQuery);
-    $titleReceived = $dataTitle->item(0)->nodeValue;
-    return $titleReceived;
+    $titleRaw = $dataTitle->item(0)->nodeValue;
+    return $titleRaw;
 
   }
 
   /**
    * 
    */
-  public function formatTitle($titleReceived) {
+  public function formatTitle($titleRaw) {
     // Remove whitespace if present
-    $this->titleReceived = preg_replace('/\s+/', ' ', $this->titleReceived);
+    $titleRaw = preg_replace('/\s+/', ' ', $titleRaw);
 
     // Escape single quotes
-    $this->titleReceived = str_replace("'", "\'", $this->titleReceived);
+    $titleRaw = str_replace("'", "\'", $titleRaw);
 
-    $title = trim($this->titleReceived," ");
+    $title = trim($titleRaw," ");
 
     return $this->title = $title;
   }
@@ -156,20 +141,20 @@ abstract class Parser {
     $dataContent = $news->query($this->contentQuery);
 
     // Join data from different lines
-    $contentReceived = '';
+    $contentRaw = '';
     foreach ($dataContent as $line) {
-      $contentReceived .= $line->nodeValue;
+      $contentRaw .= $line->nodeValue;
     }
 
-    return $contentReceived;
+    return $contentRaw;
   }
 
   /**
    * 
    */
-  public function formatContent($contentReceived) {
+  public function formatContent($contentRaw) {
     // Escape single quotes
-    $content = str_replace("'", "\'", $contentReceived);
+    $content = str_replace("'", "\'", $contentRaw);
 
     return $this->content = $content;
   }
@@ -181,21 +166,25 @@ abstract class Parser {
    */
   public function getDate($news) {
     $dataDate = $news->query($this->dateQuery);
-    $dateReceived = $dataDate->item(0)->nodeValue;
+    $dateRaw = $dataDate->item(0)->nodeValue;
 
-    return $dateReceived;
+    return $dateRaw;
   }
 
   /**
    * 
    */
-  public function formatDate($dateReceived) {
+  public function formatDate($dateRaw) {
     // Get only date & time data from string
-    preg_match('^\\d{1,2}/\\d{1,2}/\\d{4}^',$dateReceived,$day);
-    preg_match('^\\d{1,2}:\\d{1,2}^',$dateReceived,$time);
+    preg_match('^\\d{1,2}/\\d{1,2}/\\d{4}^',$dateRaw,$day);
+    preg_match('^\\d{1,2}:\\d{1,2}^',$dateRaw,$time);
     $date = $day[0]. " " .$time[0];
 
     return $this->date = $date;
+  }
+
+  public function return() {
+    return true;
   }
 
 

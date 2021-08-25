@@ -63,7 +63,9 @@ abstract class Parser {
 
     // Parse page data from html
     $news = $this->htmlParse();
-
+    echo "<pre>";
+    var_dump($news);
+    echo "</pre>";
     // Get title,content,data data
     $titleRaw = $this->getTitle($news);
     $contentRaw = $this->getContent($news);
@@ -93,11 +95,13 @@ abstract class Parser {
 
     // Execute curl request
     $html = $this->curl->exec();
-
+    echo "<pre>";
+    var_dump($html);
+    echo "</pre>";
     // Create a DomDocument 
     $dom = new \DOMDocument();
     $dom->loadHTML('<?xml encoding="utf-8" ?>' . $html,LIBXML_NOERROR);
-
+    
     // Return a DOMXPath object
     $parse = new \DOMXPath($dom);
     return $parse;
@@ -109,7 +113,7 @@ abstract class Parser {
    * 
    * @return string
    */
-  protected function getTitle($news) {
+  public function getTitle($news) {
 
     $dataTitle = $news->query($this->titleQuery);
     $titleRaw = $dataTitle->item(0)->nodeValue;
@@ -139,7 +143,7 @@ abstract class Parser {
    * 
    * @return string
    */
-  protected function getContent($news) {
+  public function getContent($news) {
     $dataContent = $news->query($this->contentQuery);
 
     // Join data from different lines
@@ -168,7 +172,7 @@ abstract class Parser {
    * 
    * @return string 
    */
-  protected function getDate($news) {
+  public function getDate($news) {
     $dataDate = $news->query($this->dateQuery);
     $dateRaw = $dataDate->item(0)->nodeValue;
 

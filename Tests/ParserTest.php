@@ -68,18 +68,6 @@ class ParserTest extends TestCase {
         $this->assertStringContainsString('date tag',$mockCurl->exec());
 
     }
-    /**
-     * Test if getParse function actually return an array
-     */
-    public function testParseReturnArray()
-    {
-
-        $result = ['title' => 'random title','content' => 'random content','date' => 'random date'];
-        $this->mockParser->expects($this->once())->method('getParse')->willReturn($result);
-
-        $this->assertIsArray($this->mockParser->getParse());
-
-    }
 
     /**
      * Test if curl result can be transformed to a domXPath object
@@ -176,6 +164,7 @@ class ParserTest extends TestCase {
 
         $this->assertGreaterThan(100,strlen($content));
     }
+
     /**
      * Test if content is formatted, escapes single quotes
      */
@@ -238,6 +227,19 @@ class ParserTest extends TestCase {
     public function testdateFormatted($dateRaw,$dateExpected)
     {
         $this->assertEquals($dateExpected,$this->anonymousParser->formatDate($dateRaw));
+    }
+
+    /**
+     * Test if getParse function actually return an array
+     */
+    public function testParseReturnArray()
+    {
+
+        $result = ['title' => 'random title','content' => 'random content','date' => 'random date'];
+        $this->mockParser->expects($this->once())->method('getParse')->willReturn($result);
+
+        $this->assertIsArray($this->mockParser->getParse());
+
     }
 
 }

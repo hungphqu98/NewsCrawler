@@ -63,9 +63,7 @@ abstract class Parser {
 
     // Parse page data from html
     $news = $this->htmlParse();
-    echo "<pre>";
-    var_dump($news);
-    echo "</pre>";
+
     // Get title,content,data data
     $titleRaw = $this->getTitle($news);
     $contentRaw = $this->getContent($news);
@@ -95,9 +93,7 @@ abstract class Parser {
 
     // Execute curl request
     $html = $this->curl->exec();
-    echo "<pre>";
-    var_dump($html);
-    echo "</pre>";
+
     // Create a DomDocument 
     $dom = new \DOMDocument();
     $dom->loadHTML('<?xml encoding="utf-8" ?>' . $html,LIBXML_NOERROR);
